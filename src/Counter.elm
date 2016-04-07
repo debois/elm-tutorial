@@ -14,18 +14,19 @@ init val =
 
 
 type Action
-  = Increment
-  | Decrement
+  = ChangeQty Int
 
 
-update : Action -> Model -> Model
+{-
+Update myself, and emit the change,
+together with the model.
+https://github.com/evancz/elm-architecture-tutorial/issues/30
+-}
+update : Action -> Model -> (Model, Int)
 update action model = 
   case action of
-    Increment ->
-      model + 1
-
-    Decrement ->
-      model - 1
+    ChangeQty qty ->
+      (model + qty, qty)
 
 
 {-
@@ -37,13 +38,13 @@ view : Signal.Address Action -> Model -> Html
 view address model =
   div []
     [ button 
-      [ onClick address Decrement ]
+      [ onClick address (ChangeQty -1) ]
       [ text "-" ]
     , div
       [ countStyle ]
       [ text (toString model) ]
     , button
-      [ onClick address Increment ]
+      [ onClick address (ChangeQty 1) ]
       [ text "+" ]
     ]
 

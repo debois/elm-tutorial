@@ -12,6 +12,7 @@ it consists of two Counters, with their own Model
 type alias Model =
   { topCounter : Counter.Model
   , bottomCounter : Counter.Model
+  , totalQty : Int
   }
 
 {-
@@ -21,6 +22,7 @@ init : Int -> Int -> Model
 init top bottom =
   { topCounter = Counter.init top
   , bottomCounter = Counter.init bottom
+  , totalQty = 0
   }
 
 
@@ -53,14 +55,22 @@ update action model =
       init 0 0
 
     Top counterAction ->
-      { model |
-        topCounter = Counter.update counterAction model.topCounter
-      }
+      let (counter, qty) = Counter.update counterAction model.topCounter
+          newTotalQty = model.totalQty + qty
+      in
+          { model 
+          | topCounter = counter
+          , totalQty = newTotalQty
+          }
 
     Bottom counterAction ->
-      { model |
-        bottomCounter = Counter.update counterAction model.bottomCounter
-      }
+      let (counter, qty) = Counter.update counterAction model.bottomCounter
+          newTotalQty = model.totalQty + qty
+      in
+          { model 
+          | bottomCounter = counter
+          , totalQty = newTotalQty
+          }
 
 
 {-
@@ -73,6 +83,9 @@ view address model =
   [ Counter.view (Signal.forwardTo address Top) model.topCounter
   , Counter.view (Signal.forwardTo address Bottom) model.bottomCounter
   , button [ onClick address Reset ] [ text "RESET" ]
+  , div []
+    [ text "Total: "
+    , text (toString model.totalQty) ]
   ]
 
 
