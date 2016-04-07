@@ -7,32 +7,30 @@ import Html.Events exposing (onClick)
 type alias Model = Int
 
 type Action
-  = Increment
-  | Decrement
+  = ChangeQty Int
+
 
 update : Action -> Model -> Model
 update action model = 
   case action of
-    Increment ->
-      model + 1
-
-    Decrement ->
-      model - 1
+    ChangeQty qty ->
+      model + qty
 
 
 view : Signal.Address Action -> Model -> Html
 view address model =
   div []
     [ button 
-      [ onClick address Decrement ]
+      [ onClick address (ChangeQty -1) ]
       [ text "-" ]
     , div
       [ countStyle ]
       [ text (toString model) ]
     , button
-      [ onClick address Increment ]
+      [ onClick address (ChangeQty 1) ]
       [ text "+" ]
     ]
+
 
 countStyle : Attribute
 countStyle =
