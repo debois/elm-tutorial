@@ -4,11 +4,19 @@ import Html exposing (..)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 
+
 type alias Model = Int
+
+
+init : Int -> Model
+init val =
+  val
+
 
 type Action
   = Increment
   | Decrement
+
 
 update : Action -> Model -> Model
 update action model = 
@@ -20,6 +28,11 @@ update action model =
       model - 1
 
 
+{-
+"address" is now an address to an Action in the parent module.
+On "click", the local Action "Increment" is sent to the parent,
+tagged as requested by the parent.
+-}
 view : Signal.Address Action -> Model -> Html
 view address model =
   div []
@@ -33,6 +46,7 @@ view address model =
       [ onClick address Increment ]
       [ text "+" ]
     ]
+
 
 countStyle : Attribute
 countStyle =
