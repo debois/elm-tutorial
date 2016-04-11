@@ -2,8 +2,7 @@
 
 ```bash
 npm install --global elm elm-live
-elm package install evancz/start-app
-elm package install evancz/elm-html
+elm package install 
 ```
 
 Make a script file (e.g. ./elm-run, chmod +x), with:
